@@ -1,0 +1,43 @@
+.page-login, .page-register{
+  position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 999;
+	padding-top: var(--fontSize-48);
+  height: 100vh;
+	width: 100%;
+	background: var(--gradient-hero);
+}
+
+.box-auth{
+  margin: var(--spacing-32) auto;
+  padding: var(--spacing-32) var(--spacing-40);
+  max-width: 600px;
+  box-shadow: 0 4px 8px 0 rgba(13, 10, 44, 0.04);
+  background-color: var(--grayColor-white);
+  text-align: center;
+
+  .logo{
+    width: 120px;
+    margin-bottom: var(--spacing-20);
+  }
+
+  label {
+    color: #2482c9;
+    font-weight: 600;
+    margin-bottom: 3px;
+  }
+
+  .form-group{
+    margin: 0 auto var(--spacing-32) auto;
+    max-width: 400px;
+  }
+
+  .auth-intro{
+    margin-bottom: var(--spacing-32);
+  }
+
+  .auth-bottom{
+    margin-top: var(--spacing-32);
+  }
+}

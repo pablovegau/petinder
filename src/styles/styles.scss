@@ -1,0 +1,7 @@
+
+// importar todos los archivos scss de la aplicación
+// (el archivo _variables no lo incluimos porque se llama desde vue.config.js)
+
+@import "./theme";
+@import "./_base.scss";
+@import "./_auth.scss"; // login & register
