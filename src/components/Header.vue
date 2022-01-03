@@ -27,6 +27,8 @@
         </nav>
       </div>
 
+      <Button v-if="isLoggedIn" linkName="NewPet">New</Button>
+
       <div class="header__wrapper--right">
         <Button v-if="isLoggedIn === false" linkName="Login">Iniciar sesión</Button>
         <Avatar v-else :currentUser="currentUser" :handleLogout="handleLogout" />

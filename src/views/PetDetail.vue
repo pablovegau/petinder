@@ -1,5 +1,5 @@
 <template>
-  <div class="profile">
+  <div class="profile" v-if="futureBestFriendInfo">
     <PetProfileBasic
       :id="futureBestFriendsId"
       :name="futureBestFriendInfo.name"
@@ -19,7 +19,7 @@
       <PetProfileNotes :info_notes="futureBestFriendInfo.info_notes" v-if="futureBestFriendInfo.info_notes.length > 0" />
     </div>
   </div>
-  <PetProfileActions :name="futureBestFriendInfo.name" />
+  <PetProfileActions :name="futureBestFriendInfo.name" v-if="futureBestFriendInfo" />
 </template>
 
 <script>
@@ -30,7 +30,7 @@ import PetProfileStatus from '../components/PetProfileStatus.vue'
 import PetProfileNotes from '../components/PetProfileNotes.vue'
 import PetProfileActions from '../components/PetProfileActions.vue'
 
-import futureBestFriendsInfo from '../assets/pets.json'
+import { getPet } from '../db'
 
 export default {
   name: 'PetDetail',
@@ -44,13 +44,12 @@ export default {
   },
   data () {
     return {
-      futureBestFriendsId: this.$route.params.id
+      futureBestFriendsId: this.$route.params.id,
+      futureBestFriendInfo: undefined
     }
   },
-  computed: {
-    futureBestFriendInfo () {
-      return futureBestFriendsInfo.data.find(pet => pet.id === Number(this.futureBestFriendsId))
-    }
+  async mounted () {
+    this.futureBestFriendInfo = await getPet(this.futureBestFriendsId)
   }
 }
 </script>

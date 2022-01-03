@@ -36,7 +36,6 @@
       <p class="auth-bottom">
         ¿No tienes cuenta? <router-link class="alink" :to="{ name: 'Register' }">Regístrate</router-link>
       </p>
-      {{ isLoggedIn }}
     </section>
   </main>
 </template>

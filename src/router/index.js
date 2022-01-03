@@ -18,6 +18,16 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/Register.vue')
   },
   {
+    path: '/new',
+    name: 'NewPet',
+    component: () => import(/* webpackChunkName: "about" */ '../views/NewPet.vue')
+  },
+  {
+    path: '/search/:keyword',
+    name: 'SearchResults',
+    component: () => import(/* webpackChunkName: "about" */ '../views/SearchResults.vue')
+  },
+  {
     path: '/pet/:id',
     name: 'PetDetail',
     component: () => import(/* webpackChunkName: "about" */ '../views/PetDetail.vue')

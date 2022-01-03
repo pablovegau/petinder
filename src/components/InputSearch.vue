@@ -1,8 +1,8 @@
 <template>
-  <div class="inputSearch">
-    <input type="text" class="inputSearch__search" placeholder="Busca a tu nuevo mejor amigo" />
+  <form @submit="submit" class="inputSearch">
+    <input type="text" class="inputSearch__search" placeholder="Busca a tu nuevo mejor amigo" v-model="keyword" />
     <img class="inputSearch__searchIcon" :src="iconSearch" alt="">
-  </div>
+  </form>
 </template>
 
 <script>
@@ -12,7 +12,14 @@ export default {
   name: 'InputSearch',
   data () {
     return {
-      iconSearch: iconSearch
+      iconSearch: iconSearch,
+      keyword: ''
+    }
+  },
+  methods: {
+    submit: function (e) {
+      e.preventDefault()
+      this.$router.push({ name: 'SearchResults', params: { keyword: this.keyword } })
     }
   }
 }
