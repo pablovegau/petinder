@@ -1,25 +1,34 @@
 <template>
   <div class="searchResults">
-    <div class="searchResults__title">{{ keyword }}</div>
-    <PetGrid v-if="pets?.length > 0" :futureBestFriendsInfo="pets" />
-    <div v-else-if="pets?.length === 0" >No pets found</div>
+    <div v-if="showPetGrid" class="searchResults__title">{{ keyword }}</div>
+    <PetGrid v-if="showPetGrid" :futureBestFriendsInfo="pets" />
+    <div v-else class="searchResults__noMatch" >
+      <div class="searchResults__noMatchText">
+        <p><span>No se ha encontrado ningún gatete ni perrete</span> que coincida con la búsqueda 😢...</p>
+        <p><span>Pero</span> no te preocupes, <span>aquí abajo ⬇️ puedes seguir buscando tu match</span> 💘</p>
+      </div>
+      <InputSearch />
+    </div>
   </div>
 </template>
 
 <script>
 import { simpleSearchPets } from '../db'
 import PetGrid from '@/components/PetGrid.vue'
+import InputSearch from '@/components/InputSearch.vue'
 
 export default {
   name: 'SearchResults',
   data () {
     return {
       keyword: this.$route.params.keyword,
-      pets: undefined
+      pets: undefined,
+      showPetGrid: true
     }
   },
   components: {
-    PetGrid
+    PetGrid,
+    InputSearch
   },
   watch: {
     '$route.params.keyword' (newKeyword) {
@@ -30,6 +39,7 @@ export default {
     getPets: async function (keyword) {
       // const keyword = key.charAt(0).toUpperCase() + key.slice(1)
       this.pets = await simpleSearchPets(keyword)
+      this.showPetGrid = this.pets.length > 0
     }
   },
   async mounted () {
@@ -40,8 +50,9 @@ export default {
 
 <style lang="scss">
 .searchResults {
+  // TODO: check this
+  height: calc(100% - 95px + 32px);
   max-width: var(--layout-maxWidth);
-  margin-bottom: var(--spacing-32);
   margin-left: auto;
   margin-right: auto;
   padding-top: 95px;
@@ -51,6 +62,28 @@ export default {
     font-family: var(--title-fontFamily);
     font-size: var(--fontSize-24);
     font-weight: 800;
+  }
+
+  &__noMatch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+
+  &__noMatchText {
+    margin-bottom: var(--spacing-32);
+    text-align: center;
+
+    p:first-child {
+      margin-bottom: var(--spacing-16);
+    }
+
+    span {
+      color: var(--color-purple-dark);
+      font-weight: 700;
+    }
   }
 }
 </style>

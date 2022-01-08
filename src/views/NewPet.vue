@@ -1,8 +1,7 @@
 <template>
-  <div class="newPet" v-if="isLoggedIn">
-    <h1 class="newPet__title">Nuevo animal</h1>
-
-    <form @submit="createPet" action="">
+  <div class="newPet">
+    <h1 v-if="isLoggedIn" class="newPet__title">Nuevo animal</h1>
+    <form v-if="isLoggedIn" @submit="createPet">
       <fieldset class="newPet__inputWrapper">
         <label for="name" class="newPet-required">Nombre</label>
         <input type="text" id="name" v-model="name">
@@ -148,18 +147,10 @@
         <Button :accent="true">Desar</Button>
       </div>
     </form>
-  </div>
-  <div v-else >
-    <div>hola</div>
-    <div>hola</div>
-    <div>hola</div>
-    <div>hola</div>
-    <div>hola</div>
-    <div>hola</div>
-    <div>hola</div>
-    <div>hola</div>
-    <div>hola</div>
-    <div>You need to be logged to create new files</div>
+
+    <div v-else class="newPet__noLogged" >
+      <p>Necesitas iniciar sesión para crear nuevas fichas</p>
+    </div>
   </div>
 </template>
 
@@ -297,10 +288,19 @@ export default {
 
 <style lang="scss">
 .newPet {
+  // TODO check this
+  height: calc(100% - 62px);
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
   padding: 122px 32px 0px;
+
+  &__noLogged {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
 
   &__title {
     margin-bottom: var(--spacing-24);
