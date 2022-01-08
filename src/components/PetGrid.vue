@@ -1,10 +1,11 @@
 <template>
-  <div class="latestAdditions">
-    <h3 class="latestAdditions__title">Últimas incorporaciones</h3>
-    <div id="latestAdditions__grid" class="latestAdditions__grid">
-      <div v-for="(futureBestFriendInfo, index) in futureBestFriendsInfo" :key="futureBestFriendInfo.name">
-        <PetCard :futureBestFriendInfo="futureBestFriendInfo" :index="index" />
-      </div>
+  <div class="petGrid">
+    <div id="petGrid__grid" class="petGrid__grid">
+      <PetCard
+        v-for="(futureBestFriendInfo, index) in futureBestFriendsInfo"
+        :key="futureBestFriendInfo.name"
+        :futureBestFriendInfo="futureBestFriendInfo"
+        :index="index" />
     </div>
   </div>
 </template>
@@ -13,7 +14,7 @@
 import PetCard from '../components/PetCard'
 
 export default {
-  name: 'PetList',
+  name: 'PetGrid',
   components: {
     PetCard
   },
@@ -22,18 +23,11 @@ export default {
 </script>
 
 <style lang="scss">
-.latestAdditions {
+.petGrid {
   max-width: var(--layout-maxWidth);
   margin-bottom: var(--spacing-32);
   margin-left: auto;
   margin-right: auto;
-
-  &__title {
-    padding: var(--spacing-40) var(--spacing-16);
-    font-family: var(--title-fontFamily);
-    font-size: var(--fontSize-24);
-    font-weight: 800;
-  }
 
   &__grid {
     display: grid;

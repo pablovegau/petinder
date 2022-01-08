@@ -1,13 +1,14 @@
 <template>
   <div class="searchResults">
-    <PetList v-if="pets?.length > 0" :futureBestFriendsInfo="pets" />
+    <div class="searchResults__title">{{ keyword }}</div>
+    <PetGrid v-if="pets?.length > 0" :futureBestFriendsInfo="pets" />
     <div v-else-if="pets?.length === 0" >No pets found</div>
   </div>
 </template>
 
 <script>
 import { simpleSearchPets } from '../db'
-import PetList from '@/components/PetList.vue'
+import PetGrid from '@/components/PetGrid.vue'
 
 export default {
   name: 'SearchResults',
@@ -18,7 +19,7 @@ export default {
     }
   },
   components: {
-    PetList
+    PetGrid
   },
   watch: {
     '$route.params.keyword' (newKeyword) {
@@ -39,6 +40,17 @@ export default {
 
 <style lang="scss">
 .searchResults {
-  padding: 95px 35px 0px;
+  max-width: var(--layout-maxWidth);
+  margin-bottom: var(--spacing-32);
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 95px;
+
+  &__title {
+    padding: var(--spacing-40) var(--spacing-16);
+    font-family: var(--title-fontFamily);
+    font-size: var(--fontSize-24);
+    font-weight: 800;
+  }
 }
 </style>
