@@ -8,8 +8,18 @@
       </fieldset>
 
       <fieldset class="newPet__file">
-        <label for="image_url" class="newPet-required">Imagen</label>
-        <input type="file" id="image_url" @change="onFileChange">
+        <span class="newPet-required input__label">Imagen</span>
+        <div class="newPet__fileUpload">
+          <label for="image_upload">Subir imagen</label>
+          <input type="file" id="image_upload" @change="onFileChange">
+        </div>
+
+        <p>or</p>
+
+        <div class="newPet__fileUrl">
+          <label for="image_url">Url de la imagen</label>
+          <input type="text" id="image_url" @change="onFileChange">
+        </div>
       </fieldset>
       <div v-if="imageUrl" class="newPet__preview">
         <img :src="imageUrl" alt="uploaded image"/>
@@ -287,9 +297,16 @@ export default {
 </script>
 
 <style lang="scss">
+.input {
+  &__label {
+    font-weight: 600;
+    margin-bottom: var(--spacing-8);
+  }
+}
+
 .newPet {
   // TODO check this
-  height: calc(100% - 62px);
+  min-height: calc(100% - 62px);
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;

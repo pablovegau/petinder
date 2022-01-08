@@ -6,7 +6,7 @@
     <div class="notFound__buttons">
       <Button linkName="Home">Ir al inicio</Button>
       <span>o</span>
-      <Button :accent="true" linkName="PetDetail" :linkParams="{ id: randomId }">Encuentra un 🐶 o 🐱 adorable</Button>
+      <Button :accent="true" linkName="PetDetail" :linkParams="{ id: idToRedirect }">Encuentra un 🐶 o 🐱 adorable</Button>
     </div>
   </div>
   <div class="notFound__image">
@@ -18,16 +18,21 @@
 
 <script>
 import Button from '../components/Button.vue'
+import { getAllPets } from '../db'
 
 export default {
   name: 'NotFound',
   data () {
     return {
-      randomId: Math.ceil(Math.random() * 12)
+      idToRedirect: ''
     }
   },
   components: {
     Button
+  },
+  async mounted () {
+    const allPets = await getAllPets()
+    this.idToRedirect = allPets[Math.floor(Math.random() * allPets.length)].id
   }
 }
 </script>
