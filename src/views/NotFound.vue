@@ -1,5 +1,5 @@
 <template>
-<div :class="`notFound background--color5`">
+<div :class="`notFound background--color${randomId}`">
   <div class="notFound__error">
     <h6>404</h6>
     <p>Lo sentimos, la página que buscas no existe</p>
@@ -24,7 +24,8 @@ export default {
   name: 'NotFound',
   data () {
     return {
-      idToRedirect: ''
+      idToRedirect: '',
+      randomId: Math.ceil(Math.random() * 12)
     }
   },
   components: {
