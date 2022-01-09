@@ -5,7 +5,7 @@
     <div v-if="showPetGrid" class="searchResultsAdvancedButtons">
       <Button
         v-if="!showAdvancedSearch"
-        @click="toogleAdvancedSearch"
+        @click="openAdvancedSearch"
         :withIcon="true"
         :iconSrc="openEyeIcon"
       >
@@ -13,7 +13,7 @@
       </Button>
       <Button
         v-if="showAdvancedSearch"
-        @click="toogleAdvancedSearch"
+        @click="closeAdvancedSearch"
         :withIcon="true"
         :iconSrc="closeEyeIcon"
       >
@@ -114,8 +114,12 @@ export default {
     }
   },
   methods: {
-    toogleAdvancedSearch: function () {
-      this.showAdvancedSearch = !this.showAdvancedSearch
+    openAdvancedSearch: function () {
+      this.showAdvancedSearch = true
+    },
+    closeAdvancedSearch: function () {
+      this.showAdvancedSearch = false
+      this.getPets(this.keyword)
     },
     getPets: async function (keyword) {
       // const keyword = key.charAt(0).toUpperCase() + key.slice(1)
