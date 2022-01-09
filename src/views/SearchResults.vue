@@ -125,6 +125,7 @@ export default {
     advancedSearch: async function (e) {
       e.preventDefault()
       this.pets = await searchPets(this.keyword, Object.values(this.species), Object.values(this.sex), Object.values(this.size))
+      this.showPetGrid = this.pets.length > 0
     }
   },
   async mounted () {
