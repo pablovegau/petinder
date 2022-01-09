@@ -24,7 +24,8 @@ export default {
   name: 'NotFound',
   data () {
     return {
-      idToRedirect: ''
+      idToRedirect: '',
+      randomId: Math.ceil(Math.random() * 12)
     }
   },
   components: {
