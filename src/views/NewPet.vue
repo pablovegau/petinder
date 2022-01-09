@@ -387,6 +387,7 @@ export default {
 
   &__imagePreview {
     width: 100%;
+    max-width: 700px;
     margin-bottom: var(--spacing-16);
 
     img {
