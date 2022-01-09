@@ -55,10 +55,32 @@ export async function simpleSearchPets (keyword = '') {
   return await getPets(q)
 }
 
-export async function searchPets (keyword = '', speciesKeyword = ['Gato', 'Perro'], sexKeyword = ['Macho'], sizeKeyword = ['Pequeño']) {
-  const species = speciesKeyword || ['Perro', 'Gato']
-  const sex = sexKeyword || ['Macho', 'Hembra']
-  const size = sizeKeyword || ['Pequeño', 'Mediano', 'Grande']
+function getQuantifiedPetsMatches (arrays) {
+  const quantifiedPetsMatches = {}
+
+  function getQuantifiedPetsMatches (array) {
+    array.forEach(pet => {
+      const { id } = pet
+      // eslint-disable-next-line no-prototype-builtins
+      if (quantifiedPetsMatches.hasOwnProperty(id)) {
+        quantifiedPetsMatches[id].matches++
+      } else {
+        quantifiedPetsMatches[id] = {}
+        quantifiedPetsMatches[id].matches = 1
+        quantifiedPetsMatches[id].value = pet
+      }
+    })
+  }
+
+  arrays.forEach(array => getQuantifiedPetsMatches(array))
+
+  return quantifiedPetsMatches
+}
+
+export async function searchPets (keyword, speciesKeyword, sexKeyword, sizeKeyword) {
+  const species = speciesKeyword.length > 0 ? speciesKeyword : ['Perro', 'Gato']
+  const sex = sexKeyword.length > 0 ? sexKeyword : ['Macho', 'Hembra']
+  const size = sizeKeyword.length > 0 ? sizeKeyword : ['Pequeño', 'Mediano', 'Grande']
 
   const qName = query(colRef, where('gram', 'array-contains', keyword))
   const qSpecies = query(colRef, where('species', 'in', species))
@@ -70,41 +92,10 @@ export async function searchPets (keyword = '', speciesKeyword = ['Gato', 'Perro
   const sexResults = await getPets(qSex)
   const sizeResults = await getPets(qSize)
 
-  const namesNameResults = nameResults.map(pet => pet.id)
-  const speciesNameResults = speciesResults.map(pet => pet.id)
-  const sexNameResults = sexResults.map(pet => pet.id)
-  const sizeNameResults = sizeResults.map(pet => pet.id)
+  const quantifiedPetsMatches = getQuantifiedPetsMatches([nameResults, speciesResults, sexResults, sizeResults])
+  const petMatches = Object.values(quantifiedPetsMatches).filter(pet => pet.matches === 4).map(pet => pet.value)
 
-  const quantity = {}
-
-  function looper (array) {
-    array.forEach(name => {
-      // eslint-disable-next-line no-prototype-builtins
-      if (quantity.hasOwnProperty(name)) {
-        quantity[name]++
-      } else {
-        quantity[name] = 1
-      }
-    })
-  }
-
-  looper(namesNameResults)
-  looper(speciesNameResults)
-  looper(sexNameResults)
-  looper(sizeNameResults)
-
-  console.log('🚀 ~ file: db.js ~ line 79 ~ searchPets ~ quantity', quantity)
-
-  const filteredNames = Object.entries(quantity).filter(pet => pet[1] === 4).map(pet => pet[0])
-
-  const filteredPets = []
-
-  filteredNames.forEach(id => {
-    filteredPets.push(nameResults.filter(pet => pet.id === id)[0])
-  })
-  console.log('🚀 ~ file: db.js ~ line 131 ~ searchPets ~ filteredPets', filteredPets)
-
-  return filteredPets
+  return petMatches
 }
 
 export default db

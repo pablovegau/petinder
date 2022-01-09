@@ -1,47 +1,72 @@
 <template>
   <div class="searchResults">
-    <div v-if="showPetGrid" class="searchResults__title">{{ keyword }}</div>
+    <div v-if="showPetGrid" class="searchResults__title">Resultados para <span>{{ keyword }}</span></div>
 
-    <form v-if="showPetGrid" action="">
-      <fieldset class="newPet__checkBox">
-        <span>Raza</span>
-        <div>
-          <input type="checkbox" id="cat" value="gato" v-model="species">
-          <label for="cat">gato</label>
-        </div>
-        <div>
-          <input type="checkbox" id="dog" value="perro" v-model="species">
-          <label for="dog">perro</label>
-        </div>
-      </fieldset>
+    <div v-if="showPetGrid" class="searchResultsAdvancedButtons">
+      <Button
+        v-if="!showAdvancedSearch"
+        @click="toogleAdvancedSearch"
+        :withIcon="true"
+        :iconSrc="openEyeIcon"
+      >
+        Busqueda avanzada
+      </Button>
+      <Button
+        v-if="showAdvancedSearch"
+        @click="toogleAdvancedSearch"
+        :withIcon="true"
+        :iconSrc="closeEyeIcon"
+      >
+        Busqueda avanzada
+      </Button>
+    </div>
 
-      <fieldset class="newPet__checkBox">
-        <span>Sexo</span>
-        <div>
-          <input type="checkbox" id="male" value="macho" v-model="sex">
-          <label for="male">macho</label>
-        </div>
-        <div>
-          <input type="checkbox" id="femalle" value="hembra" v-model="sex">
-          <label for="femalle">hembra</label>
-        </div>
-      </fieldset>
+    <form v-if="showPetGrid && showAdvancedSearch" @submit="advancedSearch" class="searchResultsAdvancedForm">
+      <div class="searchResultsAdvancedForm__checkboxGroups">
+        <fieldset class="searchResultsAdvancedForm__checkboxGroup">
+          <span>Raza:</span>
+          <div>
+            <input type="checkbox" id="cat" value="Gato" v-model="species">
+            <label for="cat">gato</label>
+          </div>
+          <div>
+            <input type="checkbox" id="dog" value="Perro" v-model="species">
+            <label for="dog">perro</label>
+          </div>
+        </fieldset>
 
-      <fieldset class="newPet__checkBox">
-        <span>Tamaño</span>
-        <div>
-          <input type="checkbox" id="small" value="pequeño" v-model="size">
-          <label for="small">pequeño</label>
-        </div>
-        <div>
-          <input type="checkbox" id="medium" value="mediano" v-model="size">
-          <label for="medium">mediano</label>
-        </div>
-        <div>
-          <input type="checkbox" id="large" value="grande" v-model="size">
-          <label for="large">grande</label>
-        </div>
-      </fieldset>
+        <fieldset class="searchResultsAdvancedForm__checkboxGroup">
+          <span>Sexo:</span>
+          <div>
+            <input type="checkbox" id="male" value="Macho" v-model="sex">
+            <label for="male">macho</label>
+          </div>
+          <div>
+            <input type="checkbox" id="femalle" value="Hembra" v-model="sex">
+            <label for="femalle">hembra</label>
+          </div>
+        </fieldset>
+
+        <fieldset class="searchResultsAdvancedForm__checkboxGroup">
+          <span>Tamaño:</span>
+          <div>
+            <input type="checkbox" id="small" value="Pequeño" v-model="size">
+            <label for="small">pequeño</label>
+          </div>
+          <div>
+            <input type="checkbox" id="medium" value="Mediano" v-model="size">
+            <label for="medium">mediano</label>
+          </div>
+          <div>
+            <input type="checkbox" id="large" value="Grande" v-model="size">
+            <label for="large">grande</label>
+          </div>
+        </fieldset>
+      </div>
+
+      <div>
+        <Button :accent="true">Buscar</Button>
+      </div>
     </form>
 
     <PetGrid v-if="showPetGrid" :futureBestFriendsInfo="pets" />
@@ -59,11 +84,17 @@
 import { simpleSearchPets, searchPets } from '../db'
 import PetGrid from '@/components/PetGrid.vue'
 import InputSearch from '@/components/InputSearch.vue'
+import Button from '@/components/Button.vue'
+import openEyeIcon from '../assets/images/icons/icon_eye-empty.svg'
+import closeEyeIcon from '../assets/images/icons/icon_eye-close.svg'
 
 export default {
   name: 'SearchResults',
-  data () {
+  data: function () {
     return {
+      openEyeIcon: openEyeIcon,
+      closeEyeIcon: closeEyeIcon,
+      showAdvancedSearch: false,
       keyword: this.$route.params.keyword,
       pets: undefined,
       showPetGrid: true,
@@ -74,7 +105,8 @@ export default {
   },
   components: {
     PetGrid,
-    InputSearch
+    InputSearch,
+    Button
   },
   watch: {
     '$route.params.keyword' (newKeyword) {
@@ -82,11 +114,17 @@ export default {
     }
   },
   methods: {
+    toogleAdvancedSearch: function () {
+      this.showAdvancedSearch = !this.showAdvancedSearch
+    },
     getPets: async function (keyword) {
       // const keyword = key.charAt(0).toUpperCase() + key.slice(1)
       this.pets = await simpleSearchPets(keyword)
-      searchPets(keyword)
       this.showPetGrid = this.pets.length > 0
+    },
+    advancedSearch: async function (e) {
+      e.preventDefault()
+      this.pets = await searchPets(this.keyword, Object.values(this.species), Object.values(this.sex), Object.values(this.size))
     }
   },
   async mounted () {
@@ -98,7 +136,7 @@ export default {
 <style lang="scss">
 .searchResults {
   // TODO: check this
-  height: calc(100% - 95px + 32px);
+  min-height: calc(100% - 95px + 32px);
   max-width: var(--layout-maxWidth);
   margin-left: auto;
   margin-right: auto;
@@ -109,6 +147,10 @@ export default {
     font-family: var(--title-fontFamily);
     font-size: var(--fontSize-24);
     font-weight: 800;
+
+    span {
+      color: var(--color-purple);
+    }
   }
 
   &__noMatch {
@@ -130,6 +172,37 @@ export default {
     span {
       color: var(--color-purple-dark);
       font-weight: 700;
+    }
+  }
+}
+
+.searchResultsAdvancedButtons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--spacing-32);
+}
+
+.searchResultsAdvancedForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: var(--spacing-32);
+
+  &__checkboxGroups {
+    margin-bottom: var(--spacing-16);
+  }
+
+  &__checkboxGroup {
+    display: flex;
+    margin-bottom: var(--spacing-8);
+
+    span {
+      font-weight: 700;
+      margin-right: var(--spacing-8);
+    }
+
+    div {
+      margin-right: var(--spacing-8);
     }
   }
 }

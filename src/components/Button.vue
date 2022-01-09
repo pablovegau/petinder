@@ -5,9 +5,12 @@
     </div>
     <slot></slot>
   </router-link>
-  <button v-else class="btn" :class="{ 'btn--accent': accent, 'btn--icon': icon }">
+  <button v-else class="btn" :class="{ 'btn--accent': accent, 'btn--icon': icon || withIcon }">
     <div v-if="icon">
       <img :src="shareIcon" alt="">
+    </div>
+    <div v-if="withIcon">
+      <img :src="iconSrc" alt="">
     </div>
     <slot></slot>
   </button>
@@ -18,7 +21,7 @@ import shareIcon from '../assets/images/icons/icon_share.svg'
 
 export default {
   name: 'Button',
-  props: ['accent', 'icon', 'linkName', 'linkParams'],
+  props: ['accent', 'icon', 'linkName', 'linkParams', 'withIcon', 'iconSrc'],
   data () {
     return {
       shareIcon
