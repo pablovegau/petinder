@@ -1,6 +1,6 @@
 <template>
   <div class="searchResults">
-    <div v-if="showPetGrid" class="searchResults__title">Resultados para <span>{{ keyword }}</span></div>
+    <h1 v-if="showPetGrid" class="searchResults__title">Resultados para <span>{{ keyword }}</span></h1>
 
     <div v-if="showPetGrid" class="searchResultsAdvancedButtons">
       <Button
@@ -135,18 +135,20 @@ export default {
 
 <style lang="scss">
 .searchResults {
-  // TODO: check this
-  min-height: calc(100% - 95px + 32px);
-  max-width: var(--layout-maxWidth);
-  margin-left: auto;
-  margin-right: auto;
-  padding-top: 95px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: calc(100% - 62px);
+  width: 100%;
+  padding: 135px 32px 0px;
 
   &__title {
-    padding: var(--spacing-40) var(--spacing-16);
+    margin-bottom: var(--spacing-24);
     font-family: var(--title-fontFamily);
-    font-size: var(--fontSize-24);
+    font-size: var(--fontSize-30);
     font-weight: 800;
+    line-height: 120%;
 
     span {
       color: var(--color-purple);
@@ -154,16 +156,23 @@ export default {
   }
 
   &__noMatch {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100%;
+    width: 100%;
+    padding-left: var(--spacing-32);
+    padding-right: var(--spacing-32);
   }
 
   &__noMatchText {
     margin-bottom: var(--spacing-32);
     text-align: center;
+    line-height: var(--spacing-24);
 
     p:first-child {
       margin-bottom: var(--spacing-16);

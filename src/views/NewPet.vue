@@ -1,37 +1,29 @@
 <template>
   <div class="newPet">
     <h1 v-if="isLoggedIn" class="newPet__title">Nuevo animal</h1>
-    <form v-if="isLoggedIn" @submit="createPet">
-      <fieldset class="newPet__inputWrapper">
-        <label for="name" class="newPet-required">Nombre</label>
+
+    <form v-if="isLoggedIn" @submit="createPet" class="form">
+
+      <fieldset class="form__inputTypeText">
+        <label for="name" class="required form__label">Nombre</label>
         <input type="text" id="name" v-model="name">
       </fieldset>
 
-      <fieldset class="newPet__file">
-        <span class="newPet-required input__label">Imagen</span>
-        <div class="newPet__fileUpload">
-          <label for="image_upload">Subir imagen</label>
-          <input type="file" id="image_upload" @change="onFileChange">
-        </div>
-
-        <p>or</p>
-
-        <div class="newPet__fileUrl">
-          <label for="image_url">Url de la imagen</label>
-          <input type="text" id="image_url" @change="onFileChange">
-        </div>
+      <fieldset class="form__inputTypeFile">
+        <label for="image_url" class="required form__label">Imagen</label>
+        <input type="file" id="image_url" @change="onFileChange">
       </fieldset>
-      <div v-if="imageUrl" class="newPet__preview">
+      <div v-if="imageUrl" class="newPet__imagePreview">
         <img :src="imageUrl" alt="uploaded image"/>
       </div>
 
-      <fieldset class="newPet__inputWrapper">
-        <label for="location" class="newPet-required">Localización</label>
+      <fieldset class="form__inputTypeText">
+        <label for="location" class="required form__label">Localización</label>
         <input type="text" id="location" v-model="location">
       </fieldset>
 
-      <fieldset class="newPet__radio">
-        <span class="newPet-required">Especie</span>
+      <fieldset class="form__inputTypeRadio">
+        <span class="required form__label">Especie</span>
         <div>
           <input type="radio" id="speciesCat" value="Gato" v-model="species" checked>
           <label for="speciesCat">gato</label>
@@ -42,8 +34,8 @@
         </div>
       </fieldset>
 
-      <fieldset class="newPet__radio">
-        <span class="newPet-required">Sexo</span>
+      <fieldset class="form__inputTypeRadio">
+        <span class="required form__label">Sexo</span>
         <div>
           <input type="radio" id="sexMale" value="Macho" v-model="sex" checked>
           <label for="sexMale">macho</label>
@@ -54,8 +46,8 @@
         </div>
       </fieldset>
 
-      <fieldset class="newPet__radio">
-        <span class="newPet-required">Tamaño</span>
+      <fieldset class="form__inputTypeRadio">
+        <span class="required form__label">Tamaño</span>
         <div>
           <input type="radio" id="sizeSmall" value="Pequeño" v-model="size" checked>
           <label for="sizeSmall">pequeño</label>
@@ -70,13 +62,13 @@
         </div>
       </fieldset>
 
-      <fieldset class="newPet__date">
-        <label for="bornDate" class="newPet-required">Fecha de nacimiento</label>
+      <fieldset class="form__inputTypeDate">
+        <label for="bornDate" class="required form__label">Fecha de nacimiento</label>
         <input type="date" id="bornDate" v-model="birth_date">
       </fieldset>
 
-      <fieldset class="newPet__checkBox">
-        <span class="newPet-required">Estado en la entrega</span>
+      <fieldset class="form__inputTypeCheckbox">
+        <span class="required form__label">Estado en la entrega</span>
         <div>
           <input type="checkbox" id="vaccinated" value="vaccinated" v-model="handle_status">
           <label for="vaccinated">Vacunado</label>
@@ -95,13 +87,13 @@
         </div>
       </fieldset>
 
-      <fieldset class="newPet__textArea">
-        <label for="history" class="newPet-required">Historia</label>
+      <fieldset class="form__textArea">
+        <label for="history" class="required form__label">Historia</label>
         <textarea id="history" v-model="bio"></textarea>
       </fieldset>
 
-      <fieldset class="newPet__radio">
-        <span class="newPet-required">Estado</span>
+      <fieldset class="form__inputTypeRadio">
+        <span class="required form__label">Estado</span>
         <div>
           <input type="radio" id="forAdoption" value="En adopción" v-model="status" checked>
           <label for="forAdoption">En adopción</label>
@@ -120,9 +112,9 @@
         </div>
       </fieldset>
 
-      <fieldset class="newPet__multipleSelect">
-        <label for="personality">Personalidad</label>
-        <p class="newPet__info">pulsa ctrl (Windows) o command (MacOs) para seleccionar mas de un elemento</p>
+      <fieldset class="form__inputTypeSelect--multiple">
+        <label for="personality" class="form__label">Personalidad</label>
+        <p class="newPet__selectMultipleInfo">pulsa ctrl (Windows) o command (MacOs) para seleccionar mas de un elemento</p>
         <select id="personality" v-model="personality" multiple>
           <option value="Bueno con niños">Bueno con niños</option>
           <option value="Bueno con perros">Bueno con perros</option>
@@ -141,8 +133,8 @@
         </select>
       </fieldset>
 
-      <fieldset v-for="(infoNote, index) in info_notes" :key="index" class="newPet__inputWrapper">
-        <label :for="`${infoNote + index}`">{{ index + 1 }}. Información adicional</label>
+      <fieldset v-for="(infoNote, index) in info_notes" :key="index" class="form__inputTypeText">
+        <label :for="`${infoNote + index}`" class="form__label">{{ index + 1 }}. Información adicional</label>
         <input type="text" :id="`${infoNote + index}`" v-model="infoNote.info_note">
       </fieldset>
 
@@ -154,7 +146,7 @@
       <p v-if="error" class="newPet__error"><span>Error</span> - {{ error }}</p>
 
       <div class="newPet__submitButton">
-        <Button :accent="true">Desar</Button>
+        <Button :accent="true">Guardar</Button>
       </div>
     </form>
 
@@ -297,27 +289,93 @@ export default {
 </script>
 
 <style lang="scss">
-.input {
+.required {
+  position: relative;
+  width: fit-content;
+
+  &::after {
+    content: 'obligatorio';
+    position: absolute;
+    bottom: 0;
+    margin-left: var(--spacing-8);
+    color: var(--grayColor-mediumDark);
+    font-size: var(--fontSize-10);
+    font-weight: 400;
+    letter-spacing: 0.5px;
+  }
+}
+
+.form {
   &__label {
     font-weight: 600;
     margin-bottom: var(--spacing-8);
   }
+
+  &__inputTypeText,
+  &__inputTypeFile,
+  &__inputTypeRadio,
+  &__inputTypeCheckbox,
+  &__inputTypeDate,
+  &__textArea,
+  &__inputTypeSelect--multiple {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: var(--spacing-16);
+  }
+
+  &__inputTypeText,
+  &__inputTypeDate {
+    input {
+      border-radius: var(--spacing-4);
+      border: 1px solid rgba(#5B49FE, 0.5);
+      height: 36px;
+      width: 100%;
+    }
+  }
+
+  &__inputTypeText {
+    input {
+      text-indent: var(--spacing-16);
+    }
+  }
+
+  &__inputTypeRadio,
+  &__inputTypeCheckbox {
+    div {
+      margin-bottom: var(--spacing-4);
+      margin-left: var(--spacing-4);
+    }
+  }
+
+  &__inputTypeDate {
+    input {
+      text-indent: var(--spacing-8);
+    }
+  }
+
+  &__textArea,
+  &__inputTypeSelect--multiple {
+    textarea,
+    select {
+      border-radius: var(--spacing-4);
+      border: 1px solid rgba(#5B49FE, 0.5);
+      height: 100px;
+      width: 100%;
+      padding-bottom: var(--spacing-8);
+      padding-left: var(--spacing-8);
+      padding-top: var(--spacing-8);
+    }
+  }
 }
 
 .newPet {
-  // TODO check this
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   min-height: calc(100% - 62px);
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 122px 32px 0px;
-
-  &__noLogged {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-  }
+  width: 100%;
+  padding: 135px 32px 0px;
 
   &__title {
     margin-bottom: var(--spacing-24);
@@ -327,37 +385,7 @@ export default {
     line-height: 120%;
   }
 
-  &__inputWrapper {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: var(--spacing-16);
-
-    label {
-      font-weight: 600;
-      margin-bottom: var(--spacing-8);
-    }
-
-    input {
-      border-radius: var(--spacing-4);
-      border: 1px solid rgba(#5B49FE, 0.5);
-      height: 36px;
-      width: 100%;
-      text-indent: 16px;
-    }
-  }
-
-  &__file {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: var(--spacing-16);
-
-    label {
-      font-weight: 600;
-      margin-bottom: var(--spacing-8);
-    }
-  }
-
-  &__preview {
+  &__imagePreview {
     width: 100%;
     margin-bottom: var(--spacing-16);
 
@@ -366,108 +394,13 @@ export default {
     }
   }
 
-  &__radio,
-  &__checkBox {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: var(--spacing-16);
-
-    span {
-      font-weight: 600;
-      margin-right: var(--spacing-32);
-      margin-bottom: var(--spacing-8);
-    }
-
-    div {
-      margin-bottom: var(--spacing-4);
-      margin-left: var(--spacing-4);
-    }
-  }
-
-  &__date {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: var(--spacing-16);
-
-    label {
-      font-weight: 600;
-      margin-bottom: var(--spacing-8);
-    }
-
-    input {
-      border-radius: var(--spacing-4);
-      border: 1px solid rgba(#5B49FE, 0.5);
-      height: 36px;
-      width: 100%;
-      text-indent: var(--spacing-8);
-    }
-  }
-
-  &__textArea {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: var(--spacing-16);
-
-    label {
-      font-weight: 600;
-      margin-bottom: var(--spacing-8);
-    }
-
-    textarea {
-      border-radius: var(--spacing-4);
-      border: 1px solid rgba(#5B49FE, 0.5);
-      height: 100px;
-      width: 100%;
-      padding-left: var(--spacing-8);
-      padding-top: var(--spacing-8);
-      padding-bottom: var(--spacing-8);
-    }
-  }
-
-  &__multipleSelect {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: var(--spacing-16);
-
-    label {
-      font-weight: 600;
-      margin-bottom: var(--spacing-8);
-    }
-
-    select {
-      border-radius: var(--spacing-4);
-      border: 1px solid rgba(#5B49FE, 0.5);
-      height: 100px;
-      width: 100%;
-      text-indent: var(--spacing-8);
-      padding-top: var(--spacing-8);
-      padding-bottom: var(--spacing-8);
-    }
-  }
-
-  &__info {
+  &__selectMultipleInfo {
     padding-bottom: var(--spacing-8);
     color: var(--grayColor-mediumDark);
     font-size: var(--fontSize-10);
     font-weight: 400;
     letter-spacing: 0.5px;
     line-height: 12px;
-  }
-
-  &-required {
-    position: relative;
-    width: fit-content;
-
-    &::after {
-      content: 'obligatorio';
-      position: absolute;
-      bottom: 0;
-      margin-left: var(--spacing-8);
-      color: var(--grayColor-mediumDark);
-      font-size: var(--fontSize-10);
-      font-weight: 400;
-      letter-spacing: 0.5px;
-    }
   }
 
   &__infoNotesControls {
@@ -499,6 +432,25 @@ export default {
     padding-top: var(--spacing-32);
     margin-bottom: var(--spacing-32);
     border-top: 1px solid var(--color-purple);
+  }
+
+  &__noLogged {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    padding-left: var(--spacing-32);
+    padding-right: var(--spacing-32);
+
+    p {
+      text-align: center;
+    line-height: var(--spacing-24);
+    }
   }
 }
 </style>

@@ -59,7 +59,7 @@ export default {
   max-width: var(--layout-maxWidth);
   margin-left: auto;
   margin-right: auto;
-  padding: 135px 35px 0px;
+  padding: 135px 32px 0px;
 
   &--bottom {
     display: flex;
