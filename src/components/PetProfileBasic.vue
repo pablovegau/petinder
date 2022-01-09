@@ -1,7 +1,7 @@
 <template>
   <div class="profileBasic">
     <div class="profileBasic__frame">
-      <div :class="`profileBasic__image background--color${id}`">
+      <div :class="`profileBasic__image background--color${Math.ceil(Math.random() * 12)}`">
         <img :src="`${portrait}`" alt="">
       </div>
     </div>

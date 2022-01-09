@@ -1,6 +1,49 @@
 <template>
   <div class="searchResults">
     <div v-if="showPetGrid" class="searchResults__title">{{ keyword }}</div>
+
+    <form v-if="showPetGrid" action="">
+      <fieldset class="newPet__checkBox">
+        <span>Raza</span>
+        <div>
+          <input type="checkbox" id="cat" value="gato" v-model="species">
+          <label for="cat">gato</label>
+        </div>
+        <div>
+          <input type="checkbox" id="dog" value="perro" v-model="species">
+          <label for="dog">perro</label>
+        </div>
+      </fieldset>
+
+      <fieldset class="newPet__checkBox">
+        <span>Sexo</span>
+        <div>
+          <input type="checkbox" id="male" value="macho" v-model="sex">
+          <label for="male">macho</label>
+        </div>
+        <div>
+          <input type="checkbox" id="femalle" value="hembra" v-model="sex">
+          <label for="femalle">hembra</label>
+        </div>
+      </fieldset>
+
+      <fieldset class="newPet__checkBox">
+        <span>Tamaño</span>
+        <div>
+          <input type="checkbox" id="small" value="pequeño" v-model="size">
+          <label for="small">pequeño</label>
+        </div>
+        <div>
+          <input type="checkbox" id="medium" value="mediano" v-model="size">
+          <label for="medium">mediano</label>
+        </div>
+        <div>
+          <input type="checkbox" id="large" value="grande" v-model="size">
+          <label for="large">grande</label>
+        </div>
+      </fieldset>
+    </form>
+
     <PetGrid v-if="showPetGrid" :futureBestFriendsInfo="pets" />
     <div v-else class="searchResults__noMatch" >
       <div class="searchResults__noMatchText">
@@ -13,7 +56,7 @@
 </template>
 
 <script>
-import { simpleSearchPets } from '../db'
+import { simpleSearchPets, searchPets } from '../db'
 import PetGrid from '@/components/PetGrid.vue'
 import InputSearch from '@/components/InputSearch.vue'
 
@@ -23,7 +66,10 @@ export default {
     return {
       keyword: this.$route.params.keyword,
       pets: undefined,
-      showPetGrid: true
+      showPetGrid: true,
+      species: [],
+      sex: [],
+      size: []
     }
   },
   components: {
@@ -39,6 +85,7 @@ export default {
     getPets: async function (keyword) {
       // const keyword = key.charAt(0).toUpperCase() + key.slice(1)
       this.pets = await simpleSearchPets(keyword)
+      searchPets(keyword)
       this.showPetGrid = this.pets.length > 0
     }
   },

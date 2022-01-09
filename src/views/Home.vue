@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <Hero />
-    <div class="latestAdditions">
+    <div v-if="futureBestFriendsInfo" class="latestAdditions">
       <h3 class="latestAdditions__title">Últimas incorporaciones</h3>
       <PetGrid :futureBestFriendsInfo="futureBestFriendsInfo" />
     </div>
@@ -15,7 +15,7 @@ import Actions from '@/components/Actions.vue'
 import Hero from '@/components/Hero.vue'
 import PetGrid from '@/components/PetGrid.vue'
 
-import futureBestFriendsInfo from '../assets/pets.json'
+import { getLastPets } from '../db'
 
 export default {
   name: 'Home',
@@ -26,8 +26,11 @@ export default {
   },
   data () {
     return {
-      futureBestFriendsInfo: futureBestFriendsInfo.data
+      futureBestFriendsInfo: undefined
     }
+  },
+  async mounted () {
+    this.futureBestFriendsInfo = await getLastPets()
   }
 }
 </script>
